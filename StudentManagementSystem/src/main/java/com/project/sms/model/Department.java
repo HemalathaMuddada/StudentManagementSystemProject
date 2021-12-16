@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -26,7 +27,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Department")
+@Table(name = "Department",uniqueConstraints = { @UniqueConstraint(columnNames = { "deparmtent_code" }) })
 @Getter
 @Setter
 @AllArgsConstructor

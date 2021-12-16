@@ -41,7 +41,7 @@ public class CollegeServiceImpl implements CollegeService {
 			c.setName(orgnaizationdto.getCollege_name());
 			c.setCode(orgnaizationdto.getCollege_code());
 			
-			List<Department> d=departmentRepository.findByName(orgnaizationdto.getName());
+			List<Department> d=departmentRepository.findByName(orgnaizationdto.getCode());
         	c.setDepartment(d);
 			
         	 User u= null;

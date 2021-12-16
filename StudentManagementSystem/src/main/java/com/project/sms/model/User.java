@@ -39,7 +39,7 @@ import lombok.var;
 
 
 @Entity
-@Table(name = "user_info", uniqueConstraints = { @UniqueConstraint(columnNames = { "user_name" }) })
+@Table(name = "user_info", uniqueConstraints = { @UniqueConstraint(columnNames = { "user_name" ,"email"}) })
 @EqualsAndHashCode(of = "id")
 @Getter
 @Setter

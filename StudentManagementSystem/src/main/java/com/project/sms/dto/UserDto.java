@@ -3,6 +3,10 @@ package com.project.sms.dto;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +24,8 @@ public class UserDto {
     private String lastName;
     private String username;
     private String password;
+    @NotNull
+    @NotEmpty
     private String emailId;
     private String role;
     

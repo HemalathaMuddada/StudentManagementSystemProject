@@ -40,7 +40,7 @@ public class StudentDataServiceImpl implements StudentDataService{
 	@Autowired
 	private EmailService emailService;
 	  MailData mail = new MailData();
-	  User user1 = new User();
+	 
 	
 	@Override
 	@Transactional
@@ -53,7 +53,7 @@ public class StudentDataServiceImpl implements StudentDataService{
 		
 UserDto user=studentDataDto.getUserDto();
 		
-        
+User user1 = new User();
         user1.setEmail(user.getEmailId());
         user1.setFirstName(user.getFirstName());
         user1.setLastName(user.getLastName());
@@ -63,26 +63,47 @@ UserDto user=studentDataDto.getUserDto();
         String encodedPassword = passwordEncoder.encode(pass);
         System.out.println(pass);
         
-        user1.setPassword(encodedPassword);
-                                                                                                                                                                                        
-//Validation for super admin role
+              
+            
+  		User uu=repository.findByUsername(studentDataDto.getCusername());
+  		studentData.setHoduser(uu);
+  		
+//Validation for HOD ROLE
         User user2=null;
         List<Authority> role=authorityRepository.findAll();
         String name=role.get(2).getName();
+       
         List<String> n=new ArrayList<String>();
         n.add(name);
-        List<Authority> addAuthorities=authorityRepository.find(user.getRole());
-       
-        if(n.equals(user.getRole())){
-        	throw new ResourceNotFoundException("You can't add this role "); }
-       
-        else
-        {
-        user1.setAuthorities(addAuthorities);
-       user2= repository.save(user1);
-        }
 
-User u= null;
+  		
+        List<Authority> listAuList=authorityRepository.findAll();
+        List<Authority> addList=authorityRepository.find(user.getRole().toUpperCase());
+       for(int i=0;i<listAuList.size();i++)
+       { 
+      	 
+      	if(user.getRole().equalsIgnoreCase(listAuList.get(i).getAuthority()))
+      	 {
+      		 System.out.println("if manin "+user.getRole());
+      		
+      		 if(user.getRole().equalsIgnoreCase(listAuList.get(2).getAuthority()))
+      			{
+      		
+      			 throw new ResourceNotFoundException("u cant add");
+      		 }
+      		 
+      		 else if(listAuList.get(2).getAuthority()!=user.getRole()&&user.getRole().equals(listAuList.get(3).getAuthority())){
+      			
+          		 user1.setAuthorities(addList);
+          			user2= repository.save(user1);
+          			System.out.println("save");
+          			
+      		 }
+
+      	 }
+      	 }
+
+/*User u= null;
 		
 		Object users = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -92,11 +113,12 @@ User u= null;
 		  studentData.setHoduser(u);
 		} else {
 		  String username = users.toString();
-	}
+	}*/
       
 		 mail.setSubject("Welcome to Student Management System Program");
 			  mail.setToEmail(user.getEmailId());
-			  mail.setContent("You were added by "+u.getUsername()+" : "+"("+n+")"+"\n" +"Username :"+user.getUsername() +"\n"+ "password :"+pass);
+			//  mail.setContent("You were added by "+u.getUsername()+" : "+"("+n+")"+"\n" +"Username :"+user.getUsername() +"\n"+ "password :"+pass);
+			  mail.setContent("You were added by "+" : "+"("+n+")"+"\n" +"Username :"+user.getUsername() +"\n"+ "password :"+pass);
 			  emailService.sendEmail(mail);
 			  
 			 if(studentDataDto.getAttendance()<65) {
@@ -108,12 +130,6 @@ User u= null;
 			 else {
 				 System.out.println("Everything Ok");
 			 }
-	
-		
-		//User user22=repository.findByUsername(studentDataDto.getUsername());
-		//studentData.setHoduser(user22);
-		
-
 	
 		studentData.setStudentuser(user2);
 		return dataRepository.save(studentData);

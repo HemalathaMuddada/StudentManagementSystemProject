@@ -40,6 +40,7 @@ private PasswordGenerator passwordGenerator;
 
 @Autowired
 private EmailService emailService;
+
 	@Override
 	@Transactional
 	public Department create(DepartmentDto departmentDto)throws Exception {
@@ -51,7 +52,7 @@ private EmailService emailService;
 		
 		UserDto user=departmentDto.getUserDto();
 		
-        User user1 = new User();
+		User user1 = new User();
         user1.setEmail(user.getEmailId());
         user1.setFirstName(user.getFirstName());
         user1.setLastName(user.getLastName());
@@ -63,24 +64,43 @@ private EmailService emailService;
         
         user1.setPassword(encodedPassword);
         User u= null;
-  		
+  		User uu=repository.findByUsername(departmentDto.getCusername());
+  		department.setUser(uu);
                                                                                                                                                                                         
-//Validation for super admin role
+//Validation for principal role
         User user2=null;
-        
         List<Authority> role=authorityRepository.findAll();
         String name=role.get(1).getName();
+       
         List<String> n=new ArrayList<String>();
         n.add(name);
-        List<Authority> addAuthorities=authorityRepository.find(user.getRole());
-       
-        if(n.equals(user.getRole())){throw new ResourceNotFoundException("You can't add this role "); }
-       
-        else
-        {
-        user1.setAuthorities(addAuthorities);
-       user2= repository.save(user1);
-        }
+
+  		
+        List<Authority> listAuList=authorityRepository.findAll();
+        List<Authority> addList=authorityRepository.find(user.getRole().toUpperCase());
+       for(int i=0;i<listAuList.size();i++)
+       { 
+      	 
+      	if(user.getRole().equalsIgnoreCase(listAuList.get(i).getAuthority()))
+      	 {
+      		 System.out.println("if manin "+user.getRole());
+      		
+      		 if(user.getRole().equalsIgnoreCase(listAuList.get(1).getAuthority()))
+      			{
+      		
+      			 throw new ResourceNotFoundException("u cant add");
+      		 }
+      		 
+      		 else if(listAuList.get(0).getAuthority()!=user.getRole()&&user.getRole().equals(listAuList.get(2).getAuthority())){
+      			
+          		 user1.setAuthorities(addList);
+          			user2= repository.save(user1);
+          			System.out.println("save");
+          			
+      		 }
+
+      	 }
+      	 }
         
        // user1.setAuthorities(addAuthorities);
           
@@ -90,7 +110,7 @@ private EmailService emailService;
 			  mail.setContent("You were added by "+n+"\n" +"Username :"+user.getUsername() +"\n"+ "password :"+pass);
 			  emailService.sendEmail(mail);
 
-		  		Object users = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		  		/*Object users = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		  		if (users instanceof UserDetails) {
 		  		  String username = ((UserDetails)users).getUsername();
@@ -99,7 +119,7 @@ private EmailService emailService;
 		  		} else {
 		  		  String username = users.toString();
 		  		  
-		  	}
+		  	}*/
 			  		
 			  		department.setHoduser(user2);
 			  		return departmentRepository.save(department);
@@ -109,7 +129,7 @@ private EmailService emailService;
 	
 	@Override
 	public Department update(DepartmentDto departmentDto) {
-		  Optional<Department> departmentdb=this.departmentRepository.findById(departmentDto.getId());
+		  Optional<Department> departmentdb=this.departmentRepository.findById(departmentDto.getDeptid());
 			
 
 			
@@ -149,6 +169,7 @@ else
 	public Department findDepartmentById(Long id) {
 		Optional<Department> departmentdb=this.departmentRepository.findById(id);
 		if(departmentdb.isPresent()) {
+			 
 			return departmentdb.get();
 		}
 		

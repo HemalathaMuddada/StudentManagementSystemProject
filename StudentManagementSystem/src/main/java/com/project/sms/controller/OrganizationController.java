@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +34,7 @@ import com.project.sms.service.CollegeServiceImpl;
 
 @RestController
 @RequestMapping("/organization")
+@CrossOrigin("http://localhost:4200")
 public class OrganizationController {
 
 	@Autowired
@@ -42,7 +44,6 @@ public class OrganizationController {
     public List<College>  getCompanies() {
        return this.service.findColleges(); 
     }
-	
 	
 	
 	@GetMapping(value="/{id}")

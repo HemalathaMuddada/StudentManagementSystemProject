@@ -19,7 +19,7 @@ public class Orgnaizationdto {
 	private String college_name;
 	private String college_code;
 
-	private List<String> code;
+	private List<String> dcode;
 	
 	private String username ;
 	

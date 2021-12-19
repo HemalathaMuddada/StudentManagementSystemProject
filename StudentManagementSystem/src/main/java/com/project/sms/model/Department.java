@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Department",uniqueConstraints = { @UniqueConstraint(columnNames = { "deparmtent_code" }) })
+@Table(name = "Department",uniqueConstraints = { @UniqueConstraint(columnNames = {"department_code"}) })
 @Getter
 @Setter
 @AllArgsConstructor
@@ -36,8 +36,7 @@ public class Department {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private Long id;
-
+    private Long deptid;
     @Column(name = "department_name")
     @NotNull
     private String  name;

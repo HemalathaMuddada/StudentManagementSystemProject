@@ -130,8 +130,7 @@ public class UserDetailsServiceImpl implements UserDetailsService,UserService {
 	      		
 	      		 if(user.getRole().equalsIgnoreCase(listAuList.get(0).getAuthority()))
 	      			{
-	      			
-	      			 System.out.println(listAuList.get(i).getAuthority()+"inner if");
+	      		
 	      			 throw new ResourceNotFoundException("u cant add");
 	      		 }
 	      		 

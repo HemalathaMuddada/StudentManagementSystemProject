@@ -15,9 +15,7 @@ import com.project.sms.model.Department;
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
 
-	//List<Department> find(DepartmentDto departmentDto);
-	@Query(value="select *from Department d where d.department_name in(:name)",nativeQuery = true)
-List<Department> findByName(@Param("name") List<String>  name);
+	@Query(value="select *from Department d where d.code in(:code)",nativeQuery = true)
+List<Department> findByName(@Param("code") List<String>  code);
 
-	//List<College> findByName(String name);
 }
